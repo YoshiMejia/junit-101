@@ -1,0 +1,38 @@
+package junit5tests;
+
+//sometimes we might want a test method to  *not* execute based on some conditions that can be evaluated into a boolean. this would be an assumption feature that skips some/entire tests based on the return value
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import static org.junit.jupiter.api.Assumptions.*;
+
+public class Assumptions {
+    @ParameterizedTest(name = "Run: {index} - value: {arguments}")
+     @ValueSource(ints = {1,5,6})
+
+    void intValues(int param){
+        // without adding the static import the line looks like org.junit.jupiter.api.Assumptions.assumeTrue(param > 4);
+        // but you click on the .Assumptions part, click option + enter, and "Add static import..." 
+        // then Assumptions is imported at the top and the line becomes 
+            assumeTrue(param > 4);
+        System.out.println("param = " + param);
+      }
+      
+      
+      // note the assumeTrue line and the args being passed into ValueSource. Because the first arg of 1 does satisfy the condition of param > 4 (because 1 < 4) it will not run
+
+      //output
+    //org.opentest4j.TestAbortedException: Assumption failed: assumption is not true
+    //param = 5
+    //param = 6
+
+
+    // we can create another assumption and provide a custom message to run when the Assumption fails
+
+    @ParameterizedTest
+    @CsvSource(value = {"one,two", "three,four","five,six"})
+    void csvSource_2String(String param1, String param2){
+        assumeTrue(param1.equals("Steve"), "Assumption failed for the " + "following param2: " + param2);
+        System.out.println("param1 = " + param1 + ", param2 = " + param2);
+    }
+}
