@@ -1,0 +1,57 @@
+package junit5tests;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+
+//disabling tests, reasons include; avoid certain dates, browsers, operating systems, etc
+
+public class DisabledEnabled {
+
+    @Test
+    // @Disabled -- completely disables without any condition. In the output you will see the following test was ignored completely
+    // @Disabled("Disabled for demo") -- this will display the arg as a message in the output
+    @Disabled("Disabled for demo")
+    void firstTest(){
+        System.out.println("First test method");
+    }
+    // output
+    //Fifth test method
+    //Third test method
+    //
+    //Disabled for demo
+    //Second test method
+    //Fourth test method
+
+    @Test
+    // disable on certain operating systems (maybe our program wouldnt work on a certain OS)
+    @DisabledOnOs(value = OS.MAC, disabledReason = "Disabled for demo")
+    void secondTest(){
+        System.out.println("Second test method");
+    }
+    //output
+    // Fifth test method
+    //Third test method
+    //
+    //Disabled for demo
+    //
+    //Disabled on operating system: Mac OS X ==> Disabled for demo
+    //Fourth test method
+
+    @Test
+    void thirdTest(){
+        System.out.println("Third test method");
+    }
+
+    @Test
+    void fourthTest(){
+        System.out.println("Fourth test method");
+    }
+
+    @Test
+    void fifthTest(){
+        System.out.println("Fifth test method");
+    }
+}
+
