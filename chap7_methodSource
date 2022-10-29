@@ -1,0 +1,67 @@
+package junit5tests;
+
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+// this was added in after doing the "Add static import" on the Arguments line below
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class ParameterizedTests {
+// in order to generate values based on certain conditions, instead of specifying a csvFile or @csvSource annotation use @MethodSource
+
+    List<String> sourceString(){
+        return Arrays.asList("tomato","carrot","cabbage");
+    }
+
+    @ParameterizedTest
+    // in order for a method to be a valid method source, it needs to return a type Stream
+    @MethodSource(value = "sourceString")
+    void methodSource_Str(String p1){
+        System.out.println("p1 = " + p1);
+    }
+    //output
+    //p1 = tomato
+    //p1 = carrot
+    //p1 = cabbage
+
+    Stream<String> sourceStringAsStream(){
+        return Stream.of("beets", "apple", "pear");
+    }
+
+    @ParameterizedTest
+    @MethodSource(value = "sourceStringAsStream")
+    void methodSource_Stream(String p1){
+        System.out.println("p1 = " + p1);
+    }
+
+    //output
+    //p1 = beets
+    //p1 = apple
+    //p1 = pear
+
+    // say we needed a stream and double
+    //create a method that returns a list/stream of argumemts
+    List<Arguments> sourceList_StrDouble(){
+        return Arrays.asList(arguments("tomato", 1.2), arguments("carrot", 4.5), arguments("cabbage", 7.8));
+    }
+    // when using the code above, click on the arguments arg, option+enter, and "Add static import..."
+
+    @ParameterizedTest
+    @MethodSource(value = "sourceList_StrDouble")
+    void methodSource_StrDblList(String p1, double p2){
+        System.out.println("p1 = " + p1 + ", p2 = " + p2);
+    }
+    //output
+    //p1 = tomato, p2 = 1.2
+    //p1 = carrot, p2 = 4.5
+    //p1 = cabbage, p2 = 7.8
+}
+
+
+
