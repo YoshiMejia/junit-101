@@ -1,0 +1,54 @@
+package junit5tests;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.*;
+
+public class ParameterizedTests {
+@ParameterizedTest
+    // always need ^ before the following line
+    @CsvSource(value = {"one,two", "three,four","five,six"})
+    // this stands for "comma separated values" which makes sense when you see the above and then the output below
+    void csvSource_2String(String param1, String param2){
+        System.out.println("param1 = " + param1 + ", param2 = " + param2);
+    }
+    // output
+    //param1 = one, param2 = two
+    //param1 = three, param2 = four
+    //param1 = five, param2 = six
+    
+    @ParameterizedTest
+    @CsvSource(value = {"steve,32,true", "captain,21,false", "bucky,5,true"})
+    void csvSource_StrIntBool(String p1, int p2, boolean p3){
+        System.out.println("p1 = " + p1 + ", p2 = " + p2 + ", p3 = " + p3);
+    }
+    // output
+    //p1 = steve, p2 = 32, p3 = true
+    //p1 = captain, p2 = 21, p3 = false
+    //p1 = bucky, p2 = 5, p3 = true
+
+
+    //if using a string that uses a comma in it, you have to use single quotes '' inside of the double quotes "" in order to make sure the comma is read as part of the string and not a delimiter/string separator
+    @ParameterizedTest
+    @CsvSource(value = {"captain america,'steve , rogers'", "winder soldier,'bucky , barnes"})
+    void csvSource_commaString(String p1, String p2){
+        System.out.println("p1 = " + p1 + ", p2 = " + p2);
+    }
+    //output
+  //p1 = captain america, p2 = steve , rogers
+    //p1 = winder soldier, p2 = bucky , barnes
+
+
+
+    //the following method will be using the csvSource to specifiy a custom delimiter instead of using the default comma delimiter. in the delimiter arg, you must use '' single quotes
+    @ParameterizedTest
+    @CsvSource(value = {"steve?rogers", "bucky?barnes"}, delimiter = '?')
+    void csvSource_CustomDelimiter(String p1, String p2){
+        System.out.println("p1 = " + p1 + ", p2 = " + p2);
+    }
+    //output
+    //p1 = steve, p2 = rogers
+    //p1 = bucky, p2 = barnes
+
+
+
+}
