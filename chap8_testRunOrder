@@ -1,0 +1,58 @@
+package junit5tests;
+
+import org.junit.jupiter.api.*;
+
+//in some cases we want our test methods from our class to run in a certain order, not the default JUnit order.
+//to order tests AlphaNumerically, go to test class level and add the @TestMethodOrder annotation
+//the line below will order the methods by name, excluding the lifecycle methods.
+
+// if we want the sorting to be according to the Display Name instead of the method name, change the line below to @TestMethodOrder(MethodOrderer.DisplayName.class)
+// if theres a combined set of method (some with a display name, some without) the methods with a display name will run in alphabetical order first, then the methods without a display name will run in alpha order after.
+
+// if we want a certain order, @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+// with OrderAnnotation we need to give the methods an order. We need to add the @Order() annotation seen below.
+@TestMethodOrder(MethodOrderer.MethodName.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class OrderedTestClass1 {
+
+    //in some cases we want our test methods from our class to run in a certain order, not the default JUnit order.
+    //to order tests AlphaNumerically, go to test class level and add the @TestMethodOrder annotation
+    @BeforeAll
+    void beforeAll(){
+        System.out.println("--This is the before All method");
+    }
+
+    @BeforeEach
+    void beforeEach(){
+        System.out.println("----This is the before Each method");
+    }
+
+    @AfterAll
+    void afterAll(){
+        System.out.println("-------This is the after all method");
+    }
+
+    @AfterEach
+    void  afterEach(){
+        System.out.println("------------this is the after each method");
+    }
+
+    @Test
+    @Order(2)
+    void firstMethod(){
+        System.out.println("First test method");
+    }
+
+    @Test
+    @DisplayName("Second method")
+    void secondMethod(){
+        System.out.println("Second test method");
+    }
+
+    @Test
+    @Order(1)
+    void thirdTest(){
+        System.out.println("Third test");
+    }
+}
+
